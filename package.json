@@ -1,9 +1,9 @@
 {
   "name": "zoomatch",
-  "description": "A Typescript class for convenient pattern matching",
+  "description": "A small Typescript class for convenient pattern matching",
   "private": false,
   "license": "MIT",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "author": "Donovan Harshbarger",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

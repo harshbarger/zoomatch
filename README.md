@@ -1,6 +1,6 @@
 # Zoomatch
 
-Zoomatch is a pattern matching class written in Typescript. It draws inspiration from the excellent [ts-pattern](https://github.com/gvergnaud/ts-pattern), though the two have rather different APIs. Zoomatch will probably be more convenient for matching primitives, while ts-pattern has more features for working with objects.
+Zoomatch is a small pattern matching class written in Typescript. It draws inspiration from the excellent [ts-pattern](https://github.com/gvergnaud/ts-pattern), though the two have rather different APIs. Zoomatch will probably be more convenient for matching primitives, while ts-pattern has more features for working with objects.
 
 ## Installation
 
