@@ -86,6 +86,6 @@ class Match<T, U = T> {
   }
 }
 
-export function match<T>(value: T): Match<T> {
-  return new Match<T>(value);
+export function match<T, U = T>(value: T): Match<T, U> {
+  return new Match<T, U>(value);
 }
