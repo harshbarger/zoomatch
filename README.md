@@ -126,4 +126,4 @@ tablesNeeded([10, 10, 25]); // '5 tables needed'
 
 ## License
 
-MIT
+MIT (see license.md in this repository)
