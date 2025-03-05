@@ -5,7 +5,7 @@ type PredicateOrConst<I> = I | Predicate<I>;
 
 const NO_MATCH_YET = Symbol("no match yet");
 
-class Match<T, U = T> {
+class Match<T, U> {
   #value: T;
   #result: U | typeof NO_MATCH_YET = NO_MATCH_YET;
   constructor(value: T) {
@@ -110,6 +110,6 @@ class Match<T, U = T> {
   }
 }
 
-export function match<T, U = T>(value: T): Match<T, U> {
+export function match<T, U>(value: T): Match<T, U> {
   return new Match<T, U>(value);
 }

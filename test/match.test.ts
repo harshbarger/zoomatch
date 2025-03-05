@@ -90,29 +90,21 @@ describe("match", () => {
 
   it("handles whenWithFn", () => {
     expect(
-      match<number[], number>([3, 4])
-        .whenWithFn(first, isPositive, double)
-        .otherwise(-2)
+      match([3, 4]).whenWithFn(first, isPositive, double).otherwise(-2)
     ).toBe(6);
     expect(
-      match<number[], number>([-3, 4])
-        .whenWithFn(first, isPositive, double)
-        .otherwise(-2)
+      match([-3, 4]).whenWithFn(first, isPositive, double).otherwise(-2)
     ).toBe(-2);
-    expect(
-      match<number[], number>([3, 4]).whenWithFn(first, 3, double).otherwise(-2)
-    ).toBe(6);
-    expect(
-      match<number[], number>([4, 3]).whenWithFn(first, 3, double).otherwise(-2)
-    ).toBe(-2);
+    expect(match([3, 4]).whenWithFn(first, 3, double).otherwise(-2)).toBe(6);
+    expect(match([4, 3]).whenWithFn(first, 3, double).otherwise(-2)).toBe(-2);
   });
 
   it("works with asIs", () => {
-    expect(match(1).when(1, asIs).otherwise(-2)).toBe(1);
+    expect(match(1).when(isPositive, asIs).otherwise(-2)).toBe(1);
     expect(
-      match<string, number>("pig")
+      match("pig")
         .whenWithFn((x) => x.length, isPositive, asIs)
         .otherwise(-2)
-    ).toBe(-2);
+    ).toBe(3);
   });
 });
