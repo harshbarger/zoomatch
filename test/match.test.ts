@@ -4,6 +4,7 @@ import { match } from "../src/match";
 const isPositive = (x: number) => x > 0;
 const isEven = (x: number) => x % 2 === 0;
 const isDivisibleByThree = (x: number) => x % 3 === 0;
+const first = (x: number[]) => x[0] || NaN;
 
 const double = (x: number) => x * 2;
 const addFive = (x: number) => x + 5;
@@ -85,5 +86,24 @@ describe("match", () => {
     expect(match(1).whenNone([], 10).otherwise(-2)).toBe(10);
     expect(match(1).whenAny([], 10).otherwise(-2)).toBe(-2);
     expect(match(1).whenAll([], 10).otherwise(-2)).toBe(10);
+  });
+
+  it("handles whenWithFn", () => {
+    expect(
+      match<number[], number>([3, 4])
+        .whenWithFn(first, isPositive, double)
+        .otherwise(-2)
+    ).toBe(6);
+    expect(
+      match<number[], number>([-3, 4])
+        .whenWithFn(first, isPositive, double)
+        .otherwise(-2)
+    ).toBe(-2);
+    expect(
+      match<number[], number>([3, 4]).whenWithFn(first, 3, double).otherwise(-2)
+    ).toBe(6);
+    expect(
+      match<number[], number>([4, 3]).whenWithFn(first, 3, double).otherwise(-2)
+    ).toBe(-2);
   });
 });

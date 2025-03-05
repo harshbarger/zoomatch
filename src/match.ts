@@ -17,10 +17,20 @@ class Match<T, U = T> {
     return transform instanceof Function ? transform(this.#value) : transform;
   }
 
+  #doTransformOther<V>(transform: FnOrConst<V, U>, value: V) {
+    return transform instanceof Function ? transform(value) : transform;
+  }
+
   #isPassing(condition: PredicateOrConst<T>): boolean {
     return condition instanceof Function
       ? condition(this.#value)
       : condition === this.#value;
+  }
+
+  #isPassingOther<V>(condition: PredicateOrConst<V>, value: V): boolean {
+    return condition instanceof Function
+      ? condition(value)
+      : condition === value;
   }
 
   #noMatchYet() {
@@ -74,6 +84,20 @@ class Match<T, U = T> {
       }
     }
 
+    return this;
+  }
+
+  whenWithFn<V>(
+    fn: (x: T) => V,
+    condition: PredicateOrConst<V>,
+    transform: FnOrConst<V, U>
+  ): Match<T, U> {
+    if (this.#noMatchYet()) {
+      const fnOfValue = fn(this.#value);
+      if (this.#isPassingOther(condition, fnOfValue)) {
+        this.#result = this.#doTransformOther(transform, fnOfValue);
+      }
+    }
     return this;
   }
 
