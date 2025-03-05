@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { match } from "../src/match";
+import { asIs, match } from "../src/index";
 
 const isPositive = (x: number) => x > 0;
 const isEven = (x: number) => x % 2 === 0;
@@ -104,6 +104,15 @@ describe("match", () => {
     ).toBe(6);
     expect(
       match<number[], number>([4, 3]).whenWithFn(first, 3, double).otherwise(-2)
+    ).toBe(-2);
+  });
+
+  it("works with asIs", () => {
+    expect(match(1).when(1, asIs).otherwise(-2)).toBe(1);
+    expect(
+      match<string, number>("pig")
+        .whenWithFn((x) => x.length, isPositive, asIs)
+        .otherwise(-2)
     ).toBe(-2);
   });
 });
