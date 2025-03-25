@@ -1,11 +1,6 @@
-type Fn<I, O> = (x: I) => O;
-type FnOrConst<I, O> = O | Fn<I, O>;
-type Predicate<I> = (x: I) => boolean;
-type PredicateOrConst<I> = I | Predicate<I>;
-
 const NO_MATCH_YET = Symbol("no match yet");
 
-class Match<T, U> {
+export class Match<T, U> {
   #value: T;
   #result: U | typeof NO_MATCH_YET = NO_MATCH_YET;
   constructor(value: T) {
@@ -14,11 +9,15 @@ class Match<T, U> {
   }
 
   #doTransform<U>(transform: FnOrConst<T, U>) {
-    return transform instanceof Function ? transform(this.#value) : transform;
+    return transform instanceof Function
+      ? transform(this.#value)
+      : transform;
   }
 
   #doTransformOther<V>(transform: FnOrConst<V, U>, value: V) {
-    return transform instanceof Function ? transform(value) : transform;
+    return transform instanceof Function
+      ? transform(value)
+      : transform;
   }
 
   #isPassing(condition: PredicateOrConst<T>): boolean {
@@ -27,7 +26,10 @@ class Match<T, U> {
       : condition === this.#value;
   }
 
-  #isPassingOther<V>(condition: PredicateOrConst<V>, value: V): boolean {
+  #isPassingOther<V>(
+    condition: PredicateOrConst<V>,
+    value: V
+  ): boolean {
     return condition instanceof Function
       ? condition(value)
       : condition === value;
@@ -64,7 +66,10 @@ class Match<T, U> {
   }
 
   // constants not allowed for predicate since this would likely be a logic error
-  whenAll(conditions: Predicate<T>[], transform: FnOrConst<T, U>): Match<T, U> {
+  whenAll(
+    conditions: Predicate<T>[],
+    transform: FnOrConst<T, U>
+  ): Match<T, U> {
     if (this.#noMatchYet()) {
       if (conditions.every((c) => this.#isPassing(c))) {
         this.#result = this.#doTransform(transform);
@@ -108,8 +113,4 @@ class Match<T, U> {
 
     return this.#result as U;
   }
-}
-
-export function match<T, U>(value: T): Match<T, U> {
-  return new Match<T, U>(value);
 }

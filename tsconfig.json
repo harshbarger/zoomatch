@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/index.ts", "test"],
+  "include": ["src/index.ts", "test", "src/types.ts"],
   "exclude": ["node_modules"]
 }
