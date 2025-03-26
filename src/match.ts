@@ -1,3 +1,5 @@
+import { FnOrConst, Predicate, PredicateOrConst } from "./types";
+
 export const NO_MATCH_YET = Symbol("no match yet");
 
 export class Match<T, U> {
