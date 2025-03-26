@@ -10,12 +10,14 @@ npm install zoomatch
 
 ## Basic Usage
 
-`match` is a factory function that returns an instance of `Match<T, U>`. `T` is the type of the value being matched, and `U` is the type of the result.
+`match` is a factory function that returns an instance of `Match<T, U>` (in most cases) or a `MatchNoArg<U>` (described near the end). `T` is the type of the value being matched, and `U` is the type of the result.
 
 ```ts
 import { match } from "zoomatch";
 
-function getWaterPhase(temperatureC: number): "solid" | "liquid" | "gas" {
+function getWaterPhase(
+  temperatureC: number
+): "solid" | "liquid" | "gas" {
   return match(temperature)
     .when((x) => x < 0, "solid")
     .when((x) => x > 100, "gas")
@@ -123,6 +125,30 @@ function tablesNeeded(groupSizes: number[]): string {
 tablesNeeded([20, 30, 10, 50]); // 'The firs marshall will not allow 110 people'
 tablesNeeded([10, 10, 25]); // '5 tables needed'
 ```
+
+## Streamlined Syntax With Expressions (New in version 1.2)
+
+There are some circumstances in which you may find it better to use an alternate form of `match` which take no arguments in the constructor and uses boolean expressions rather than functions or constants. If you supply no arguments to `match`, the factory function, will return an instance of `MatchNoArg<U>` instead of the `Match<T, U>` instance that applied in the prior examples. With the `MatchNoArg` class, the `when` and related methods use boolean expressions instead of functions to determine if a condition passes, and the result will also be a expression rather than a function to be evaluated.
+
+This form is designed for cases in which the conditions involved refer to a large number of variables, where it might be cumbersome to create an ad-hoc object to be the arguments for all of the conditions in your `when`, `whenAny`, etc. methods. The more attached you are to a functional(ish) style, the less likely you are to prefer this form, but it can be easier to read in some cases.
+
+```ts
+const a = 10;
+const b = 20;
+const c = 30;
+
+let x = 5;
+
+const result = match()
+  .when(x === a, 50) // nope
+  .whenAll([x > 0, b > a, x > c], 100) // nope, only 2 of 3
+  .whenNone([x % 2 === 0, b - a > x], 200) // nope, 2nd passes
+  .whenAny([x % 2 === 0, c === 20], x + 300) // yes, one passes
+  .otherwise(400);
+// result === 305
+```
+
+The underlying class for this form does not have a `whenWithFn` method since there is no argument to be transformed.
 
 ## License
 
