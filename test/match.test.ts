@@ -148,11 +148,10 @@ describe("match with argument", () => {
 });
 
 describe("match without argument", () => {
-  const a = -4;
-  const b = -2;
-  const c = 7;
-
   it("handles expression comparisons with when", () => {
+    const a = -4;
+    const b = -2;
+
     let x = -4;
     let y = -2;
     let z = 0;
